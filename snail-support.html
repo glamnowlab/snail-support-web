@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>스네일(Snail) 고객 지원</title>
+<meta name="description" content="스네일(Snail) 고객 지원 — 문의, 자주 묻는 질문, 예약 취소·변경, 회원탈퇴 안내" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root {
+    --ink: #17171a;
+    --ink-soft: #4a4a52;
+    --ink-faint: #8a8a92;
+    --line: #ececef;
+    --line-strong: #d9d9df;
+    --bg: #ffffff;
+    --accent: #2f6bff;
+    --chip: #f5f6f8;
+    --radius: 14px;
+    --maxw: 720px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+      system-ui, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 56px 22px 96px;
+  }
+
+  header.page {
+    margin-bottom: 34px;
+  }
+
+  h1 {
+    font-size: clamp(30px, 6.5vw, 44px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin: 0 0 14px;
+  }
+
+  .lede {
+    font-size: 16px;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 56ch;
+  }
+
+  nav.toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 26px 0 8px;
+  }
+  nav.toc a {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-decoration: none;
+    background: var(--chip);
+    padding: 8px 13px;
+    border-radius: 999px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  nav.toc a:hover,
+  nav.toc a:focus-visible { background: #eaecef; color: var(--ink); }
+
+  section {
+    padding: 30px 0;
+    border-top: 1px solid var(--line);
+  }
+  section:first-of-type { border-top: none; }
+
+  h2 {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+    scroll-margin-top: 20px;
+  }
+
+  p { margin: 0 0 12px; color: var(--ink-soft); font-size: 15.5px; }
+  p:last-child { margin-bottom: 0; }
+
+  dl.info {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 108px 1fr;
+    gap: 10px 16px;
+  }
+  dl.info dt { color: var(--ink-faint); font-size: 14.5px; font-weight: 600; }
+  dl.info dd { margin: 0; color: var(--ink); font-size: 15.5px; }
+  dl.info a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  dl.info a:hover { text-decoration: underline; }
+
+  ol.steps { margin: 4px 0 0; padding: 0; counter-reset: step; list-style: none; }
+  ol.steps li {
+    position: relative;
+    padding: 0 0 16px 40px;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+  }
+  ol.steps li:last-child { padding-bottom: 0; }
+  ol.steps li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 0;
+    width: 26px; height: 26px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+  }
+  ol.steps li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 12.5px; top: 30px; bottom: 4px;
+    width: 1px;
+    background: var(--line-strong);
+  }
+  ol.steps b { color: var(--ink); font-weight: 700; }
+  .tab {
+    display: inline-block;
+    background: var(--chip);
+    border-radius: 7px;
+    padding: 1px 8px;
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 14px;
+  }
+
+  .faq details {
+    border-bottom: 1px solid var(--line);
+    padding: 4px 0;
+  }
+  .faq details:first-child { border-top: 1px solid var(--line); }
+  .faq summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 15px 34px 15px 2px;
+    font-weight: 600;
+    font-size: 15.5px;
+    color: var(--ink);
+    position: relative;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: "";
+    position: absolute;
+    right: 6px; top: 50%;
+    width: 9px; height: 9px;
+    border-right: 2px solid var(--ink-faint);
+    border-bottom: 2px solid var(--ink-faint);
+    transform: translateY(-65%) rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+  .faq details[open] summary::after { transform: translateY(-35%) rotate(225deg); }
+  .faq .a { padding: 0 2px 16px; color: var(--ink-soft); font-size: 15px; }
+
+  .note {
+    background: var(--chip);
+    border-radius: var(--radius);
+    padding: 15px 17px;
+    margin-top: 18px;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+  }
+  .note b { color: var(--ink); font-weight: 700; }
+
+  a.inline { color: var(--accent); text-decoration: none; font-weight: 600; }
+  a.inline:hover { text-decoration: underline; }
+
+  footer.page {
+    border-top: 1px solid var(--line);
+    padding-top: 26px;
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  footer.page .links { display: flex; gap: 18px; flex-wrap: wrap; }
+  footer.page a { color: var(--ink-soft); text-decoration: none; font-size: 14px; }
+  footer.page a:hover { color: var(--ink); }
+  footer.page .copy { color: var(--ink-faint); font-size: 13px; }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+  @media (max-width: 480px) {
+    .wrap { padding: 40px 18px 72px; }
+    dl.info { grid-template-columns: 92px 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="page">
+      <h1>스네일(Snail) 고객 지원</h1>
+      <p class="lede">
+        스네일을 이용해 주셔서 감사합니다. 앱 사용 중 불편한 점, 버그 정보,
+        기능 제안 등 문의사항이 있으시면 아래 안내를 참고해 주세요.
+      </p>
+      <nav class="toc" aria-label="바로가기">
+        <a href="#contact">문의</a>
+        <a href="#faq">자주 묻는 질문</a>
+        <a href="#reservation">예약 취소·변경</a>
+        <a href="#withdraw">회원탈퇴</a>
+        <a href="#operator">운영자 정보</a>
+      </nav>
+    </header>
+
+    <section id="contact">
+      <h2>문의하기</h2>
+      <p>
+        아래 이메일로 문의를 남겨 주시면 확인 후 순차적으로 답변드리겠습니다.
+        버그 정보 시 사용 기기와 앱 버전, 발생 상황을 함께 적어 주시면 더 빠르게 도와드릴 수 있어요.
+      </p>
+      <dl class="info">
+        <dt>이메일</dt>
+        <dd><a href="mailto:glamnowlab@gmail.com">glamnowlab@gmail.com</a></dd>
+        <dt>Instagram</dt>
+        <dd><a href="https://www.instagram.com/s_nail_official" target="_blank" rel="noopener">@s_nail_official</a></dd>
+        <dt>답변 시간</dt>
+        <dd>영업일 기준 순차 답변 (주말·공휴일 제외)</dd>
+      </dl>
+    </section>
+
+    <section id="faq">
+      <h2>자주 묻는 질문</h2>
+      <div class="faq">
+        <details>
+          <summary>스네일은 어떤 서비스인가요?</summary>
+          <div class="a">
+            스네일은 네일 디자인을 먼저 보고 마음에 드는 디자인으로 네일샵을 찾아 예약까지 연결하는
+            <b>디자인 탐색·예약 플랫폼</b>입니다. 원하는 색상·무드·스타일로 디자인을 검색하고,
+            해당 디자인을 시술하는 샵을 확인해 예약을 요청할 수 있어요.
+          </div>
+        </details>
+        <details>
+          <summary>표시된 가격에서 금액이 달라질 수 있나요?</summary>
+          <div class="a">
+            디자인 상세 화면의 가격은 <b>대표(기본) 금액</b>입니다. 연장/디자인 추가 지점, 길이 연장,
+            아트·패턴 추가 등 <b>선택하신 추가 옵션에 따라 최종 금액이 변경될 수 있습니다.</b>
+            최종 결제 금액은 샵과의 상담·예약 과정에서 확정됩니다.
+          </div>
+        </details>
+        <details>
+          <summary>예약은 어떻게 하나요?</summary>
+          <div class="a">
+            네일샵에 따라 <b>예약금</b>이 있는 경우가 있습니다. 예약금이 있는 샵은
+            <b>예약금 입금이 확인되어야 예약이 최종 확정</b>됩니다. 예약금 유무와 금액, 입금 방법은
+            예약 과정에서 안내되며, 자세한 조건은 각 네일샵의 정책을 따릅니다.
+          </div>
+        </details>
+        <details>
+          <summary>로그인은 어떻게 하나요?</summary>
+          <div class="a">
+            앱 실행 후 안내에 따라 간편 로그인으로 시작할 수 있습니다. 로그인 관련 문제가 있으면
+            <a class="inline" href="mailto:glamnowlab@gmail.com">glamnowlab@gmail.com</a>으로 문의해 주세요.
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="reservation">
+      <h2>예약 취소 및 변경 방법</h2>
+      <p>앱에서 요청하신 예약은 아래 절차로 취소하거나 변경할 수 있습니다.</p>
+      <ol class="steps">
+        <li>앱 하단 <span class="tab">일정</span> 탭으로 이동합니다.</li>
+        <li>취소 또는 변경할 <b>예약 내역</b>을 선택합니다.</li>
+        <li><b>예약 변경</b> 또는 <b>예약 취소</b>를 눌러 요청을 완료합니다.</li>
+      </ol>
+      <div class="note">
+        예약 취소·변경 및 환불의 구체적인 조건은 <b>각 네일샵의 정책</b>을 따릅니다.
+        방문 임박 시점의 변경이 어렵거나 급한 조정이 필요한 경우, 예약하신 샵에 직접 연락해 주시면
+        가장 빠르게 처리됩니다. 절차적 문제가 있으면
+        <a class="inline" href="mailto:glamnowlab@gmail.com">glamnowlab@gmail.com</a>으로 도와드리겠습니다.
+      </div>
+    </section>
+
+    <section id="withdraw">
+      <h2>회원탈퇴 방법</h2>
+      <p>앱 내에서 직접 회원탈퇴를 진행할 수 있습니다.</p>
+      <ol class="steps">
+        <li>앱 하단 <span class="tab">프로필</span> 탭으로 이동합니다.</li>
+        <li>우측 상단 <b>설정</b>에 들어갑니다.</li>
+        <li><b>회원탈퇴</b>를 선택하고 안내에 따라 진행합니다.</li>
+      </ol>
+      <div class="note">
+        회원탈퇴 시 계정 정보와 서비스 이용 기록은 <b>개인정보처리방침</b>에 따라 처리·삭제됩니다.
+        단, 관련 법령에 따라 일정 기간 보관이 필요한 정보는 해당 기간 동안 안전하게 보관 후 파기됩니다.
+        앱 내 탈퇴가 어려운 경우 <a class="inline" href="mailto:glamnowlab@gmail.com">glamnowlab@gmail.com</a>으로
+        가입하신 계정 정보와 함께 탈퇴를 요청해 주시면 처리해 드립니다.
+      </div>
+    </section>
+
+    <section id="operator">
+      <h2>운영자 정보</h2>
+      <dl class="info">
+        <dt>운영 서비스</dt>
+        <dd>스네일(Snail) — 네일 디자인 탐색·예약 플랫폼</dd>
+        <dt>운영자</dt>
+        <dd>김유정 (글램나우랩 / GlamNow Lab)</dd>
+        <dt>이메일</dt>
+        <dd><a href="mailto:glamnowlab@gmail.com">glamnowlab@gmail.com</a></dd>
+      </dl>
+    </section>
+
+    <footer class="page">
+      <div class="links">
+        <a href="/terms">이용약관</a>
+        <a href="/privacy">개인정보처리방침</a>
+      </div>
+      <span class="copy">© 2026 GlamNow Lab. All rights reserved.</span>
+    </footer>
+  </div>
+</body>
+</html>
